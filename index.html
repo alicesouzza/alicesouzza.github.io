@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema Técnico Integrado</title>
+</head>
+<body style="font-family: Arial; background:#f4f6f9; margin:20px;">
+
+<h1 style="text-align:center;">Sistema Técnico Integrado</h1>
+
+<!-- LOGIN HELP DESK -->
+<div style="background:white;padding:15px;margin-bottom:20px;border-radius:10px;">
+    <h2>Login - Help Desk</h2>
+    <select id="tipoUsuario" style="padding:5px;">
+        <option value="admin">Admin</option>
+        <option value="tecnico">Técnico</option>
+        <option value="cliente">Cliente</option>
+    </select>
+    <button onclick="login()" style="padding:5px;background:#007bff;color:white;border:none;">Entrar</button>
+    <p id="painel"></p>
+</div>
+
+<!-- QUIZ -->
+<div style="background:white;padding:15px;margin-bottom:20px;border-radius:10px;">
+    <h2>Quiz Técnico</h2>
+    <p>Qual componente é responsável pelo processamento?</p>
+    <button onclick="respostaQuiz('errado')" style="margin:5px;">HD</button>
+    <button onclick="respostaQuiz('certo')" style="margin:5px;">CPU</button>
+    <button onclick="respostaQuiz('errado')" style="margin:5px;">Fonte</button>
+    <p id="resultadoQuiz"></p>
+</div>
+
+<!-- SIMULADOR DE PC -->
+<div style="background:white;padding:15px;margin-bottom:20px;border-radius:10px;">
+    <h2>Simulador de Montagem</h2>
+    <label>Processador:</label>
+    <select id="cpu">
+        <option value="intel">Intel</option>
+        <option value="amd">AMD</option>
+    </select>
+
+    <label>Placa-Mãe:</label>
+    <select id="placa">
+        <option value="intel">Compatível Intel</option>
+        <option value="amd">Compatível AMD</option>
+    </select>
+
+    <button onclick="verificarCompatibilidade()" style="padding:5px;background:green;color:white;border:none;">Verificar</button>
+    <p id="compatibilidade"></p>
+</div>
+
+<!-- GERADOR DE SENHAS -->
+<div style="background:white;padding:15px;margin-bottom:20px;border-radius:10px;">
+    <h2>Gerador de Senhas</h2>
+    <input type="number" id="tamanho" placeholder="Tamanho da senha" style="padding:5px;">
+    <button onclick="gerarSenha()" style="padding:5px;background:purple;color:white;border:none;">Gerar</button>
+    <p id="senhaGerada"></p>
+</div>
+
+<!-- CONTROLE FINANCEIRO -->
+<div style="background:white;padding:15px;margin-bottom:20px;border-radius:10px;">
+    <h2>Controle Financeiro</h2>
+    <input type="number" id="valor" placeholder="Valor" style="padding:5px;">
+    <select id="tipoMov">
+        <option value="entrada">Entrada</option>
+        <option value="saida">Saída</option>
+    </select>
+    <button onclick="adicionarMovimento()" style="padding:5px;background:#28a745;color:white;border:none;">Adicionar</button>
+    <p id="saldo">Saldo: R$ 0</p>
+</div>
+
+<!-- ABRIR CHAMADO HELP DESK -->
+<div style="background:white;padding:15px;border-radius:10px;">
+    <h2>Abrir Chamado</h2>
+    <input type="text" id="chamado" placeholder="Descreva o problema" style="padding:5px;width:60%;">
+    <button onclick="abrirChamado()" style="padding:5px;background:red;color:white;border:none;">Enviar</button>
+    <ul id="listaChamados"></ul>
+</div>
+
+<script>
+    // LOGIN
+    function login(){
+        let tipo = document.getElementById("tipoUsuario").value;
+        document.getElementById("painel").innerText = "Logado como: " + tipo;
+    }
+
+    // QUIZ
+    function respostaQuiz(resposta){
+        if(resposta === "certo"){
+            document.getElementById("resultadoQuiz").innerText = "Resposta correta!";
+        } else {
+            document.getElementById("resultadoQuiz").innerText = "Resposta errada!";
+        }
+    }
+
+    // SIMULADOR
+    function verificarCompatibilidade(){
+        let cpu = document.getElementById("cpu").value;
+        let placa = document.getElementById("placa").value;
+
+        if(cpu === placa){
+            document.getElementById("compatibilidade").innerText = "Compatível!";
+        } else {
+            document.getElementById("compatibilidade").innerText = "Incompatível!";
+        }
+    }
+
+    // GERADOR DE SENHA
+    function gerarSenha(){
+        let tamanho = document.getElementById("tamanho").value;
+        let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+        let senha = "";
+
+        for(let i=0; i<tamanho; i++){
+            senha += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+
+        document.getElementById("senhaGerada").innerText = senha;
+    }
+
+    // CONTROLE FINANCEIRO
+    let saldo = 0;
+    function adicionarMovimento(){
+        let valor = parseFloat(document.getElementById("valor").value);
+        let tipo = document.getElementById("tipoMov").value;
+
+        if(tipo === "entrada"){
+            saldo += valor;
+        } else {
+            saldo -= valor;
+        }
+
+        document.getElementById("saldo").innerText = "Saldo: R$ " + saldo;
+    }
+
+    // HELP DESK
+    function abrirChamado(){
+        let texto = document.getElementById("chamado").value;
+        let li = document.createElement("li");
+        li.innerText = texto;
+        document.getElementById("listaChamados").appendChild(li);
+    }
+</script>
+
+</body>
+</html>
